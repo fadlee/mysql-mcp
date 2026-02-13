@@ -70,3 +70,9 @@ export interface DeleteRowsArgs {
   database?: string;
   where: Record<string, unknown>;
 }
+
+export interface ExecuteSqlArgs {
+  sql: string;
+  params?: unknown[];
+  database?: string;
+}

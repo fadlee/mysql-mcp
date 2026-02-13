@@ -1,5 +1,6 @@
 import {
   parseDeleteRowsArgs,
+  parseExecuteSqlArgs,
   parseInsertRowArgs,
   parseSelectRowsArgs,
   parseUpdateRowsArgs,
@@ -14,5 +15,6 @@ export function createRecordToolHandlers(context: ToolHandlerContext): ToolHandl
     insert_row: async (args) => api.insertRow(parseInsertRowArgs(args)),
     update_rows: async (args) => api.updateRows(parseUpdateRowsArgs(args)),
     delete_rows: async (args) => api.deleteRows(parseDeleteRowsArgs(args)),
+    execute_sql: async (args) => api.executeSql(parseExecuteSqlArgs(args)),
   };
 }

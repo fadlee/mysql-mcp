@@ -233,6 +233,30 @@ export const TOOL_DEFINITIONS = [
       additionalProperties: false,
     },
   },
+  {
+    name: 'execute_sql',
+    description: 'Execute custom SQL with optional positional parameters',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        sql: {
+          type: 'string',
+          description: 'SQL statement to execute',
+        },
+        params: {
+          type: 'array',
+          description: 'Positional values for SQL placeholders (?)',
+          items: {},
+        },
+        database: {
+          type: 'string',
+          description: 'Database name (optional, overrides current session database for this call)',
+        },
+      },
+      required: ['sql'],
+      additionalProperties: false,
+    },
+  },
 ] as const satisfies readonly Tool[];
 
 export type ToolName = (typeof TOOL_DEFINITIONS)[number]['name'];

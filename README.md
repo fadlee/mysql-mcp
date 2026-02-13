@@ -9,6 +9,7 @@ Model Context Protocol (MCP) server for MySQL, enabling AI assistants to query a
 - 🗂️ List databases and tables
 - 🧱 Describe table schemas
 - 📄 CRUD-like row operations (`select_rows`, `insert_row`, `update_rows`, `delete_rows`)
+- 🧾 Custom SQL execution (`execute_sql`) with optional parameters
 - 🌐 MCP resources for table schema discovery
 
 ## Installation
@@ -63,6 +64,7 @@ Use prompt-style language like this when chatting with an AI connected to this M
 7. "Update the user with id 1 and set the name to Budi."
 8. "Delete the user row with id 1."
 9. "Switch the active database to analytics."
+10. "Run custom SQL: SELECT id, email FROM users WHERE created_at >= ? with params [\"2026-01-01\"]."
 
 Tip: if you want to run an operation on a specific database without switching the active database, mention the database directly in your prompt, for example: "Fetch 5 rows from analytics.events".
 
@@ -95,6 +97,7 @@ Tip: if you want to run an operation on a specific database without switching th
 - `insert_row`
 - `update_rows`
 - `delete_rows`
+- `execute_sql`
 
 ## Development
 

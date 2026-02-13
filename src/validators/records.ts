@@ -1,5 +1,6 @@
 import type {
   DeleteRowsArgs,
+  ExecuteSqlArgs,
   InsertRowArgs,
   SelectRowsArgs,
   UpdateRowsArgs,
@@ -105,4 +106,25 @@ export function parseDeleteRowsArgs(args: UnknownObject): DeleteRowsArgs {
     database: optionalString(args.database, 'database'),
     where,
   };
+}
+
+export function parseExecuteSqlArgs(args: UnknownObject): ExecuteSqlArgs {
+  const parsed: ExecuteSqlArgs = {
+    sql: requireString(args.sql, 'sql'),
+  };
+
+  const database = optionalString(args.database, 'database');
+  if (database !== undefined) {
+    parsed.database = database;
+  }
+
+  if (args.params !== undefined) {
+    if (!Array.isArray(args.params)) {
+      throw new ValidationError('Invalid parameter: params must be an array');
+    }
+
+    parsed.params = args.params;
+  }
+
+  return parsed;
 }

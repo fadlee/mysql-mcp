@@ -29,6 +29,26 @@ function createServerWithMockApi() {
     insertRow: async () => ({ insertedId: 42, affectedRows: 1 }),
     updateRows: async () => ({ affectedRows: 1 }),
     deleteRows: async () => ({ affectedRows: 1 }),
+    executeSql: async ({ sql, database }) => {
+      if (sql.trim().toUpperCase().startsWith('SELECT')) {
+        return {
+          mode: 'query',
+          sql,
+          database: database ?? 'app_db',
+          count: 1,
+          items: [{ id: 1, email: 'admin@example.com' }],
+        };
+      }
+
+      return {
+        mode: 'mutation',
+        sql,
+        database: database ?? 'app_db',
+        affectedRows: 1,
+        changedRows: 1,
+        insertId: 42,
+      };
+    },
     listResources: async () => [
       {
         uri: 'mysql://table/app_db/users',
@@ -127,11 +147,23 @@ test('supports row operation tools', async () => {
     where: { id: 1 },
   });
   const deleted = await server.callTool('delete_rows', { table: 'users', where: { id: 1 } });
+  const sqlQuery = await server.callTool('execute_sql', {
+    sql: 'SELECT id, email FROM users WHERE id = ?',
+    params: [1],
+  });
+  const sqlMutation = await server.callTool('execute_sql', {
+    sql: 'UPDATE users SET email = ? WHERE id = ?',
+    params: ['changed@example.com', 1],
+  });
 
   assert.equal(selected.count, 1);
   assert.equal(inserted.insertedId, 42);
   assert.equal(updated.affectedRows, 1);
   assert.equal(deleted.affectedRows, 1);
+  assert.equal(sqlQuery.mode, 'query');
+  assert.equal(sqlQuery.count, 1);
+  assert.equal(sqlMutation.mode, 'mutation');
+  assert.equal(sqlMutation.affectedRows, 1);
 });
 
 test('validates row operation arguments', async () => {
@@ -152,6 +184,11 @@ test('validates row operation arguments', async () => {
   await assert.rejects(
     () => server.callTool('delete_rows', { table: 'users' }),
     /Missing required parameter: where/
+  );
+  await assert.rejects(() => server.callTool('execute_sql', {}), /Missing required parameter: sql/);
+  await assert.rejects(
+    () => server.callTool('execute_sql', { sql: 'SELECT 1', params: 'invalid' }),
+    /Invalid parameter: params must be an array/
   );
 });
 

@@ -4,6 +4,7 @@ import type {
   DatabaseInfo,
   DeleteRowsArgs,
   DescribeTableArgs,
+  ExecuteSqlArgs,
   HealthResponse,
   InsertRowArgs,
   MySqlAuthArgs,
@@ -367,6 +368,58 @@ export class MySqlApi {
     return {
       affectedRows: result.affectedRows,
     };
+  }
+
+  async executeSql(args: ExecuteSqlArgs): Promise<
+    | {
+        mode: 'query';
+        sql: string;
+        database: string | null;
+        count: number;
+        items: RowDataPacket[];
+      }
+    | {
+        mode: 'mutation';
+        sql: string;
+        database: string | null;
+        affectedRows: number;
+        changedRows: number;
+        insertId: number;
+      }
+  > {
+    const pool = this.ensureAuthenticated();
+    const params = args.params ?? [];
+
+    const connection = await pool.getConnection();
+    try {
+      let database: string | null = this.session?.database ?? null;
+      if (args.database) {
+        database = this.assertIdentifier(args.database, 'database');
+        await connection.query(`USE ${this.escapeIdentifier(database, 'database')}`);
+      }
+
+      const [rows] = await connection.query<RowDataPacket[] | ResultSetHeader>(args.sql, params);
+      if (Array.isArray(rows)) {
+        return {
+          mode: 'query',
+          sql: args.sql,
+          database,
+          count: rows.length,
+          items: rows,
+        };
+      }
+
+      return {
+        mode: 'mutation',
+        sql: args.sql,
+        database,
+        affectedRows: rows.affectedRows,
+        changedRows: rows.changedRows,
+        insertId: rows.insertId,
+      };
+    } finally {
+      connection.release();
+    }
   }
 
   async listResources(): Promise<
