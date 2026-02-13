@@ -52,34 +52,34 @@ No environment variable is required for auth.
 
 ## Quick Tutorial
 
-Gunakan gaya prompt seperti ini saat chat dengan AI yang terhubung ke MCP:
+Use prompt-style language like this when chatting with an AI connected to this MCP:
 
-1. "Login ke MySQL lokal pakai user root dan password kosong."
-2. "Set database aktif ke my_app."
-3. "Tampilkan semua tabel di database aktif."
-4. "Jelaskan struktur tabel users, termasuk nama kolom dan tipe datanya."
-5. "Ambil 10 data terbaru dari tabel users, urut berdasarkan id descending."
-6. "Tambahkan 1 user baru ke tabel users dengan email test@example.com."
-7. "Ubah nama user dengan id 1 jadi Budi."
-8. "Hapus data user dengan id 1."
-9. "Pindah database aktif ke analytics."
+1. "Log in to local MySQL using root with an empty password."
+2. "Set the active database to my_app."
+3. "Show all tables in the active database."
+4. "Describe the users table, including column names and data types."
+5. "Fetch the 10 most recent rows from users, ordered by id descending."
+6. "Insert one new user into users with email test@example.com."
+7. "Update the user with id 1 and set the name to Budi."
+8. "Delete the user row with id 1."
+9. "Switch the active database to analytics."
 
-Tips: kalau mau operasi ke database tertentu tanpa ganti database aktif, sebutkan langsung nama databasenya di prompt, misalnya "ambil 5 data dari database analytics tabel events".
+Tip: if you want to run an operation on a specific database without switching the active database, mention the database directly in your prompt, for example: "Fetch 5 rows from analytics.events".
 
-### Contoh Prompt Tambahan
+### More Prompt Examples
 
-- Filter tanggal:
-  - "Ambil data orders dari 30 hari terakhir berdasarkan kolom created_at."
-  - "Tampilkan transaksi tanggal 2026-02-01 sampai 2026-02-10 dari tabel payments."
+- Date filters:
+  - "Fetch orders from the last 30 days based on created_at."
+  - "Show payments between 2026-02-01 and 2026-02-10."
 - Pagination:
-  - "Ambil 20 data users, mulai dari data ke-21."
-  - "Tampilkan halaman 3 untuk data products dengan 10 data per halaman."
-- Pencarian keyword:
-  - "Cari users yang email-nya mengandung kata admin."
-  - "Ambil posts yang judulnya mengandung kata promo."
-- Kombinasi filter + urut:
-  - "Ambil 10 invoice status paid, urutkan dari id terbesar."
-  - "Tampilkan logs level error, urut terbaru, batasi 50 data."
+  - "Fetch 20 users starting from row 21."
+  - "Show page 3 of products with 10 rows per page."
+- Keyword search:
+  - "Find users whose email contains admin."
+  - "Fetch posts whose title contains promo."
+- Combined filter + sort:
+  - "Fetch 10 paid invoices, ordered by id descending."
+  - "Show error-level logs, newest first, limited to 50 rows."
 
 ## Available Tools
 
