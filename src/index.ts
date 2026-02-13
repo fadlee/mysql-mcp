@@ -16,7 +16,7 @@ const mysqlServer = new MySQLMCPServer();
 
 const mcpServer = new McpServer(
   {
-    name: 'mysql-mcp-server',
+    name: 'dynamic-mysql-mcp-server',
     version: '1.0.0',
   },
   {

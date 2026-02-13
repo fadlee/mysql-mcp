@@ -1,4 +1,4 @@
-# MySQL MCP Server
+# Dynamic MySQL MCP Server
 
 Model Context Protocol (MCP) server for MySQL, enabling AI assistants to query and mutate MySQL data safely through tools.
 
@@ -15,9 +15,9 @@ Model Context Protocol (MCP) server for MySQL, enabling AI assistants to query a
 ## Installation
 
 ```bash
-npm install @fadlee/mysql-mcp
+npm install dynamic-mysql-mcp
 # or
-bun install @fadlee/mysql-mcp
+bun install dynamic-mysql-mcp
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ bun install @fadlee/mysql-mcp
   "mcpServers": {
     "mysql": {
       "command": "npx",
-      "args": ["@fadlee/mysql-mcp"]
+      "args": ["dynamic-mysql-mcp"]
     }
   }
 }
@@ -38,7 +38,7 @@ bun install @fadlee/mysql-mcp
 ### Direct Usage
 
 ```bash
-npx @fadlee/mysql-mcp
+npx dynamic-mysql-mcp
 ```
 
 ## Authentication Flow (via tools)
